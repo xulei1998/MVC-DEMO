@@ -67,8 +67,6 @@ body > .page > section {
   transform: translateX(15vw);
 }
 
-#app4 {
-}
 @keyframes change {
   0% {
     background-color: rgb(250, 1, 1);

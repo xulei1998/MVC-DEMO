@@ -11354,18 +11354,22 @@ require("./app2.css");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var $tabBar = (0, _jquery.default)('#app2 .tab-bar'); //事件委托  不监听li 监听其父元素tab-bar
-
+var $tabBar = (0, _jquery.default)('#app2 .tab-bar');
 var $tabContent = (0, _jquery.default)("#app2 .tab-content");
+var index = localStorage.getItem('app2.index') || 0; //保底值 0
+
 $tabBar.on('click', 'li', function (e) {
+  //事件委托  不监听li 监听其父元素tab-bar
   var $li = (0, _jquery.default)(e.currentTarget); //这就是用户点击的那个元素li  e.target
 
   var index = $li.index();
+  localStorage.setItem('app2.index', index); //设置index保存
+
   $li.addClass('selected') //点击时 把这个Li装饰 把他兄弟的li不要这个装饰
   .siblings().removeClass('selected');
   $tabContent.children().eq(index).addClass('active').siblings().removeClass('active');
 });
-$tabBar.children().eq(0).trigger('click'); //设置首次在1出现橘色
+$tabBar.children().eq(index).trigger('click'); //设置首次在1出现橘色
 },{"jquery":"../node_modules/jquery/dist/jquery.js","./app2.css":"app2.css"}],"app3.css":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
 
@@ -11381,8 +11385,17 @@ require("./app3.css");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var $square = (0, _jquery.default)('#app3 .square');
+var active = localStorage.getItem('app3.active') === 'yes' ? true : false;
+$square.toggleClass('active', active); //有这个active类就取消  没有就加上
+
 $square.on('click', function (e) {
-  $square.toggleClass('active'); //有这个active类就取消  没有就加上
+  if ($square.hasClass('active')) {
+    $square.removeClass('active');
+    localStorage.setItem('app3.active', 'no');
+  } else {
+    $square.addClass('active');
+    localStorage.setItem('app3.active', 'yes');
+  }
 });
 },{"jquery":"../node_modules/jquery/dist/jquery.js","./app3.css":"app3.css"}],"app4.css":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
@@ -11450,7 +11463,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "2006" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "12147" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
